@@ -1,5 +1,6 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
+import { io } from 'socket.io-client';
 
 const CryptoBlock = ({ name, price, volume, change }) => {
   return (
@@ -43,6 +44,42 @@ function App() {
     };
 
     fetchCryptos();
+  }, []);
+
+  useEffect(() => {
+    const socket = io('http://localhost:8080'); // Replace with your server URL
+
+    // Subscribe to the "cryptoPriceUpdate" event from the Socket.IO server
+    socket.on("cryptoPriceUpdate", (updatedCryptos) => {
+      // Update the cryptos state when a price update is received
+      setCryptos((prevCryptos) => {
+        // Create a copy of the previous cryptos state
+        const updatedCryptosMap = new Map(
+          prevCryptos.map((crypto) => [crypto.name, crypto])
+        );
+  
+        // Update the prices, volumes, and changes for the received cryptos
+        updatedCryptos.forEach(([name, updatedCrypto]) => {
+          if (updatedCryptosMap.has(name)) {
+            updatedCryptosMap.set(name, {
+              ...updatedCryptosMap.get(name),
+              price: updatedCrypto.price,
+              volume: updatedCrypto.volume,
+              change: updatedCrypto.change,
+            });
+          }
+        });
+  
+        // Convert the updated cryptos map back to an array
+        return Array.from(updatedCryptosMap.values());
+      });
+    });
+  
+    return () => {
+      // Clean up the event listener when the component unmounts
+      socket.off("cryptoPriceUpdate");
+      socket.disconnect();
+    };
   }, []);
 
   return (
