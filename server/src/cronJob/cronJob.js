@@ -35,8 +35,6 @@ async function setProposalExpiredCronJob() {
                         });
                 }
 
-                console.log(global.mapObject);
-
                 if(changed) {
                     //code for notifying clients
                 }
