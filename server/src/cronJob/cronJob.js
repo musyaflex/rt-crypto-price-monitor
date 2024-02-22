@@ -4,7 +4,7 @@ import axios from 'axios';
 const status = true
 const cronJobExpression = "*/10 * * * * *"
 
-async function setProposalExpiredCronJob() {
+async function setProposalExpiredCronJob(io) {
     new cron.CronJob(
         cronJobExpression,
         async () => {
@@ -36,7 +36,9 @@ async function setProposalExpiredCronJob() {
                 }
 
                 if(changed) {
-                    //code for notifying clients
+                    const serializedMap = [...global.mapObject.entries()];
+                    console.log("Emitting Change Message to all clients!");
+                    io.emit('cryptoPriceUpdate', serializedMap);
                 }
             } catch (error) {
                 console.log(` Error: ${error}`);
@@ -48,10 +50,10 @@ async function setProposalExpiredCronJob() {
         status
     );
 }
-const startCronJob = () => {
+const startCronJob = (io) => {
     if (status) {
         console.log("Cronjob started");
-        setProposalExpiredCronJob();
+        setProposalExpiredCronJob(io);
     }
 };
 
