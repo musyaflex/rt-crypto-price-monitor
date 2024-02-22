@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { useEffect, useState } from 'react';
 
@@ -8,46 +7,43 @@ const CryptoBlock = ({ name, price, volume, change }) => {
       <h3>{name}</h3>
       <p className="p-price">{price}</p>
       <div>
-        <p>volume: {volume}</p>
-        <p>change: {change}</p>
+        <p>Volume: {volume}</p>
+        <p>24 Hour Change: {change}</p>
       </div>
     </div>
   );
 };
 
 function App() {
-  const [cryptos, setCryptos] = useState([
-    {
-      name: 'Bitcoin',
-      price: '$50,000',
-      volume: '1,000,000',
-      change: '+5%',
-    },
-    {
-      name: 'Ether',
-      price: '$2,000',
-      volume: '500,000',
-      change: '-2%',
-    },
-    {
-      name: 'Litecoin',
-      price: '$150',
-      volume: '200,000',
-      change: '+3%',
-    },
-    {
-      name: 'Monero',
-      price: '$100',
-      volume: '100,000',
-      change: '-1%',
-    },
-    {
-      name: 'Ripple',
-      price: '$0.50',
-      volume: '50,000',
-      change: '+1%',
-    },
-  ]);
+  const [cryptos, setCryptos] = useState([]);
+
+  useEffect(() => {
+    const fetchCryptos = async () => {
+      try {
+        // Make API call to fetch cryptocurrency data
+        const response = await fetch('http://localhost:8080/api/crypto/getPrices');
+        const data = await response.json();
+
+        // Extract the message array from the received data
+        const message = data.message;
+
+        // Map the message array to format the data for the CryptoBlock component
+        const formattedCryptos = message.map((item) => ({
+          name: item.key,
+          price: item.value.price,
+          volume: item.value.volume,
+          change: item.value.change,
+        }));
+
+        // Update the cryptos state with the formatted data
+        setCryptos(formattedCryptos);
+      } catch (error) {
+        console.error('Error fetching cryptocurrency data:', error);
+      }
+    };
+
+    fetchCryptos();
+  }, []);
 
   return (
     <div className="wrapper">
