@@ -1,5 +1,6 @@
 import express from "express"
 import http from 'http';
+import { startCronJob } from "./src/cronJob/cronJob.js";
 import cors from 'cors'
 
 const app = express();
@@ -16,7 +17,11 @@ app.use(express.urlencoded({ extended: true }));
 
 const server = http.createServer(app);
 
+global.mapObject = new Map();
+
 const PORT = 8080;
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
+
+startCronJob();
