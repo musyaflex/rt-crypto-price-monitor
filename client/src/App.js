@@ -3,13 +3,27 @@ import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
 const CryptoBlock = ({ name, price, volume, change }) => {
+  
+  const formattedPrice = parseFloat(price).toFixed(8);
+  const formattedChange = parseFloat(change).toFixed(8);
+  const formattedVolume = parseFloat(volume).toFixed(8);
+
+  const changeColor = change < 0 ? 'red' : `#54DA56`;
+
+
   return (
     <div className="crypto-block">
       <h3>{name}</h3>
-      <p className="p-price">{price}</p>
+      <p className="p-price">${formattedPrice}</p>
       <div>
-        <p>Volume: {volume}</p>
-        <p>24 Hour Change: {change}</p>
+        <div className="div-volume">
+          <p>volume:</p>
+          <p>{formattedVolume}</p>
+        </div>
+        <div className="div-change">
+        <p>change:</p>
+        <p style={{ color: changeColor }}> <strong> {formattedChange}  </strong> </p>
+        </div>
       </div>
     </div>
   );

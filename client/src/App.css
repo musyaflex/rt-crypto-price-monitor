@@ -45,7 +45,7 @@
 .crypto-tracker {
   display: inline-block;
   width: 80%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   margin: 20px;
 }
 
@@ -65,8 +65,9 @@
   border: 2px solid rgb(174, 171, 171);
   border-radius: 5px;
   padding: 10px;
-  width: 350px;
+  width: 300px;
   text-align: left;
+  place-self: center;
 }
 
 .crypto-block h3{
@@ -76,15 +77,44 @@
 
 .crypto-block .p-price {
   color: orange;
+  font-weight: bold;
   font-size: 20px;
   margin-top: 3px;
 }
 
-.crypto-block div {
-  display: flex;
-}
-
-.crypto-block div p {
+.div-volume { 
   width: 49%;
+  float: left;
+  display: block;
+}
+.div-change { 
+  width: 35%;
+  float: right;
+  display: block;
+}
+.div-change p, .div-volume p{
+  margin: 2px;
+  color: grey;
 }
 
+@media only screen and (max-width: 1200px) {
+  .crypto-tracker {
+    width: 100%;
+  }
+  .crypto-row {
+    grid-template-columns: auto auto;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .crypto-tracker {
+    width: 100%;
+  }
+  .crypto-row {
+    grid-template-columns: auto;
+  }
+
+  .div-change, .div-volume {
+    width: 100%;
+  }
+}
