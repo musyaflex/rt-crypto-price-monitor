@@ -17,7 +17,7 @@ It provides users with up-to-date information on the prices, volume, and percent
 
 ## Getting Started
 To run the backend and frontend applications locally, follow these steps:
-1. Clone the backend repository: git clone https://github.com/musyaflex/eventx_coding_challenge
+1. Clone the backend repository: git clone https://github.com/musyaflex/rt-crypto-price-monitor
 2. Navigate to the backend project directory: cd server
 3. Install the dependencies: npm i
 4. Start the backend server: npm run dev. The backend server should now be running on http://localhost:8000.
